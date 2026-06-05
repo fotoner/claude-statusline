@@ -7,16 +7,18 @@ Pretty 3-line statusline for Claude Code with ANSI 256-color support.
 ## Preview
 
 ```
-🤖 Claude Sonnet 4.5  v1.0.32
-📁 ~/projects/my-app  🌿 main ✅
-🧠 [########------------] 40% (120k left)  📝 +42 -7  💰 $1.23  ⏱️ 12m 34s
+🤖 Opus 4.8  ⚡high  v2.1.90
+📁 ~/projects/my-app  🌿 main ✅  🔗 #1234 ✓approved
+🧠 [########------------] 40%  📝 +42 -7  💰 $1.23  ⏱️ 12m 34s  📊 23% · 41%
 ```
 
 ## Features
 
-- **Line 1**: Model name + CLI version
-- **Line 2**: Working directory + Git branch & status (clean ✅ / dirty ✏️)
-- **Line 3**: Context usage bar + lines changed + cost + session duration
+- **Line 1**: Model name + reasoning effort (⚡, when supported) + CLI version
+- **Line 2**: Working directory + Git branch & status (clean ✅ / dirty ✏️) + open PR badge with review state (clickable via OSC 8)
+- **Line 3**: Context usage bar + lines changed + cost + session duration + Pro/Max rate limits (📊, when present)
+
+Git lookups are cached per session (5s TTL) to keep the status line fast, and `refreshInterval` keeps the duration ticking while the session is idle. PR and rate-limit segments only appear when Claude Code provides that data.
 
 ## Install
 
@@ -37,7 +39,8 @@ Then add to `~/.claude/settings.json`:
 {
   "statusLine": {
     "type": "command",
-    "command": "bash ~/.claude/statusline-command.sh"
+    "command": "bash ~/.claude/statusline-command.sh",
+    "refreshInterval": 3
   }
 }
 ```
@@ -54,7 +57,8 @@ Then add to `~/.claude/settings.json`:
 | Element | Color | Code |
 |---------|-------|------|
 | Model name | Cyan | `38;5;117` |
-| Directory | Blue | `38;5;153` |
+| Effort / Cost | Yellow | `38;5;222` |
+| Directory / PR / Rate limits | Blue | `38;5;153` |
 | Branch | Magenta | `38;5;183` |
 | Context (ok) | Green | `38;5;151` |
 | Context (warn) | Yellow | `38;5;222` |

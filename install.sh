@@ -18,7 +18,7 @@ echo "✅ Installed statusline-command.sh → $TARGET"
 if [ -f "$SETTINGS" ]; then
   # Preserve existing settings, add/overwrite statusLine
   tmp="$(mktemp)"
-  jq '.statusLine = {"type": "command", "command": "bash ~/.claude/statusline-command.sh"}' "$SETTINGS" > "$tmp"
+  jq '.statusLine = {"type": "command", "command": "bash ~/.claude/statusline-command.sh", "refreshInterval": 3}' "$SETTINGS" > "$tmp"
   mv "$tmp" "$SETTINGS"
   echo "✅ Updated $SETTINGS (existing settings preserved)"
 else
@@ -26,7 +26,8 @@ else
 {
   "statusLine": {
     "type": "command",
-    "command": "bash ~/.claude/statusline-command.sh"
+    "command": "bash ~/.claude/statusline-command.sh",
+    "refreshInterval": 3
   }
 }
 EOF
